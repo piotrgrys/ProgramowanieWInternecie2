@@ -1,0 +1,72 @@
+<html>
+<style>
+img {max-height:125px; margin:3px; border:1px solid #dedede;}
+</style>
+<body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+<script>
+
+
+$(document).ready(function(){
+  
+  $("button").click(function(){
+    var search=$("#search").val()
+    console.log(search)
+    var requestFindUser={
+      "async": true,
+      "crossDomain": true,
+      "url": "https://api.flickr.com/services/rest/?method=flickr.people.findByUsername&api_key=9b04ce39309e4ec4a4c82aa49b65bf6c&username="+search+"&format=json&nojsoncallback=1",
+      "method": "GET",
+      "headers": {}
+    }
+$.ajax(requestFindUser).done(function (data) {
+  console.log(data);
+  if(data.stat==="ok")
+  {
+    $("#wynik").text("Znaleziono");
+    var userid=data.user.nsid
+    console.log(userid);
+    var request = {
+    "async": true,
+    "crossDomain": true,
+    "url": "https://api.flickr.com/services/rest/?method=flickr.people.getPhotos&api_key=9b04ce39309e4ec4a4c82aa49b65bf6c&user_id="+userid+"&format=json&nojsoncallback=1",
+    "method": "GET",
+    "headers": {}
+    }
+    $.ajax(request).done(function(photosData)
+    {
+      console.log(photosData);
+      if(photosData.photos.total===0)
+      {
+        $("#wynik").text("Znaleziono użytkownika, ale brak zdjęć w jego galerii");
+      }
+      else
+      {
+        $("#galleryTitle").append(photosData.photos.photo[0].title + " Gallery");
+      }
+    })
+  }
+  else
+  {
+    $("#wynik").text("Nie znaleziono");
+  }
+  
+});
+  });
+});
+</script>
+
+
+<h2><div id="galleryTitle"></div></h2>
+<div style="clear:both;"/>
+<div id="flickr"/>
+    <div class="form-group">
+        <input type="text" name="phrase" class="form-control" placeholder="Nazwa użytkownika" id="search"/>
+    </div>
+    <button class="btn btn-primary">Find User and display photos</button>
+<div id="wynik"></div>
+
+</body>
+</html>

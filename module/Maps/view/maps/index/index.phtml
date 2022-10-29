@@ -1,0 +1,63 @@
+<?php
+$this->headScript()->appendFile(
+    'https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap',
+    'text/javascript',
+    ['async' => true, 'defer' => true]
+);
+?>
+
+<script>
+    let map;
+
+    function initMap() {
+        const latlng = new google.maps.LatLng(52.24588095869954, 20.940241813659668);
+        const myOptions = {
+            zoom: 15,
+            center: latlng,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        map = new google.maps.Map(
+            document.getElementById("map"),
+            myOptions
+        );
+        const markers = [];
+        const coordinates = [
+        ];
+        let coord=new google.maps.LatLng(0.0,0.0)
+        let i=0;
+        const latlngbounds = new google.maps.LatLngBounds();
+        <?php foreach ($this->results as $of): ?>
+            coord=new google.maps.LatLng('<?= $of->Lat ?>', '<?= $of->Lang ?>')
+            markers.push(new google.maps.Marker({
+                position: coord,
+                map: map,
+                title: "Marker nr " 
+            }));
+            var action = '<?= $of->Id ?>';
+            addInfo(markers[i], "<strong>'<?= $of->Address ?>'</strong><br/>'<?= $of->Description ?>'");
+            coordinates.push(coord)
+            latlngbounds.extend(coordinates[i]);
+            i=i+1;
+        <?php endforeach; ?>
+        map.fitBounds(latlngbounds);
+    }
+
+    function addInfo(marker, content) {
+        const infowindow = new google.maps.InfoWindow({
+            content: content
+        });
+
+        marker.addListener("click", () => {
+            infowindow.open(map, marker);
+        });
+    }
+</script>
+
+<div class="row">
+    <div class="col-md-12">
+        <h1>Google Maps</h1>
+    </div>
+    <div class="col-md-12">
+        <div id="map" style="width: 800px; height: 600px;"></div>
+    </div>
+</div>
