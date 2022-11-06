@@ -6,11 +6,11 @@
  * This should be an array of module namespaces used in the application.
  */
 return [
-    'Laminas\Mvc\Plugin\FilePrg',
     'Laminas\Mvc\Plugin\FlashMessenger',
-    'Laminas\Mvc\Plugin\Identity',
-    'Laminas\Mvc\Plugin\Prg',
+    'Laminas\Navigation',
+    'Laminas\Paginator',
     'Laminas\Session',
+    'Laminas\Mvc\I18n',
     'Laminas\Form',
     'Laminas\I18n',
     'Laminas\InputFilter',
@@ -19,9 +19,10 @@ return [
     'Laminas\Db',
     'Laminas\Router',
     'Laminas\Validator',
+    'TwbsHelper',
+    'Laminas\ZendFrameworkBridge',
     'Application',
-    'Maps',
-    'Youtube',
-    'Mapspoints',
-    'Flickr',
+    'Dropbox',
+    'SoapServer',
+    'SoapClient',
 ];

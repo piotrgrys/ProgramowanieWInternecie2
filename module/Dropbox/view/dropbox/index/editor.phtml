@@ -1,0 +1,21 @@
+<h1>Edycja pliku</h1>
+
+<?php if (!empty($this->msg)): ?>
+    <div class="alert alert-danger">
+        <?= $this->msg ?>
+    </div>
+<?php else: ?>
+    <?php if (empty($this->files)): ?>
+        <p>Brak plików.</p>
+    <?php else: ?>
+        <ul>
+            <?php foreach ($this->files as $file): ?>
+                <li>
+                    <a href="<?= $this->url('dropbox/default', ['action' => 'download'], ['query' => ['path' => $file['path_lower']]]) ?>">
+                        <?= $file['name'] ?>
+                    </a>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    <?php endif; ?>
+<?php endif; ?>
